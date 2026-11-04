@@ -4,6 +4,7 @@ if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieC
 BabyDragonMod.name = 'Son of Krumblor'
 BabyDragonMod.version = '0.1'
 BabyDragonMod.GameVersion = '2.058'
+BabyDragonMod.CCSEVersion = '2.035'
 
 BabyDragonMod.launch = function(){
 	BabyDragonMod.init = function(){
@@ -18,7 +19,8 @@ BabyDragonMod.launch = function(){
 		);
 		BabyDragonMod.isLoaded = 1;
 	};
-	Game.registerMod(BabyDragonMod.name, BabyDragonMod);
+	if(CCSE.ConfirmGameCCSEVersion(BabyDragonMod.name, BabyDragonMod.version, BabyDragonMod.GameVersion BabyDragonMod.CCSEVersion))
+		Game.registerMod(BabyDragonMod.name, BabyDragonMod);
 }
 
 if(!BabyDragonMod.isLoaded){
