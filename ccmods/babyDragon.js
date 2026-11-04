@@ -19,7 +19,7 @@ BabyDragonMod.launch = function(){
 		);
 		BabyDragonMod.isLoaded = 1;
 	};
-	if(CCSE.ConfirmGameCCSEVersion(BabyDragonMod.name, BabyDragonMod.version, BabyDragonMod.GameVersion BabyDragonMod.CCSEVersion))
+	if(CCSE.ConfirmGameCCSEVersion(BabyDragonMod.name, BabyDragonMod.version, BabyDragonMod.GameVersion, BabyDragonMod.CCSEVersion))
 		Game.registerMod(BabyDragonMod.name, BabyDragonMod);
 }
 
