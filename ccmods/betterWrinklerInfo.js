@@ -58,7 +58,7 @@ WrinklerInfoMod.launch = function(){
 		Game.customOptionsMenu.push(() => {
 			CCSE.AppendCollapsibleOptionsMenu(
 				WrinklerInfoMod.name,
-				'<div class="listing"><a class="smallFancyButton prefButton option' + WrinklerInfoMod.config.alwaysShowCount ? '' : 'off' + '" id="alwaysShowCountButton" onclick="WrinklerInfoMod.ToggleOption(\'alwaysShowCount\'); PlaySound(\'snd/tick.mp3\');">Always show count ' + WrinklerInfoMod.config.alwaysShowCount ? 'ON' : 'OFF' + '</a><label>(show number of wrinklers since your last shiny every time you pop a wrinkler)</label></div>'
+				
 			);
 		});
 		
@@ -91,15 +91,24 @@ WrinklerInfoMod.launch = function(){
 		}
 	}
 
-	WrinklerInfoMod.ToggleOption = function(optionName)
+	WrinklerInfoMod.GetOptionsMenu = function(){
+		var str = '<div class="listing">' + CCSE.MenuHelper.ToggleButton(WrinklerInfoMod.config, 'alwaysShowCount', 'alwaysShowCountButton', 'Always show count ON', 'Always show count OFF', 'WrinklerInfoMod.ToggleOption') + '<label>(whether the number of wrinklers since the last shiny is displayed with every popped wrinkler)</label></div>';
+
+		return str;
+	}
+
+	WrinklerInfoMod.ToggleOption = function(optionName, button, on, off, invert)
 	{
-		configName = 'WrinklerInfoMod.config.' + optionName
-		currentlyOn = eval(configName);
-		if (currentlyOn){
-			eval(configName + ' = false');
-		else {
-			eval(configName + ' = true');
+		if (WrinklerInfoMod.config[optionName]){
+			document.getElementByID(button).innerHTML = off;
+			WrinklerInfoMod.config[optionName] = false;
 		}
+		else{
+			document.getElementByID(button).innerHTML = on;
+			WrinklerInfoMod.config[optionName] = true;
+		}
+		
+		document.getElementByID(button).className = 'smallFancyButton prefButton option' + ((WrinklerInfoMod.config[optionName]^invert) ? '' : ' off');
 	}
 
 	if(CCSE.ConfirmGameCCSEVersion(WrinklerInfoMod.name, WrinklerInfoMod.version, WrinklerInfoMod.GameVersion, WrinklerInfoMod.CCSEVersion))
