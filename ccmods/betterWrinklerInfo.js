@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '0.2.3';
+WrinklerInfoMod.version = '0.2.4';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -22,9 +22,6 @@ WrinklerInfoMod.launch = function(){
 			if(CCSE.config.OtherMods.WrinklerInfoMod){
 				WrinklerInfoMod.stats = CCSE.config.OtherMods.WrinklerInfoMod.stats;
 				WrinklerInfoMod.config = CCSE.config.OtherMods.WrinklerInfoMod.config;
-
-				if (WrinklerInfoMod.config.alwaysShowCount)
-					document.getElementById('alwaysShowCountButton').className = 'smallFancyButton prefButton option off';
 			}
 		});
 
@@ -61,7 +58,7 @@ WrinklerInfoMod.launch = function(){
 		Game.customOptionsMenu.push(() => {
 			CCSE.AppendCollapsibleOptionsMenu(
 				WrinklerInfoMod.name,
-				'<div class="listing"><a class="smallFancyButton prefButton option" id="alwaysShowCountButton" onclick="WrinklerInfoMod.ToggleOption(\'alwaysShowCount\', \'Always show count ON\', \'Always show count OFF\'); PlaySound(\'snd/tick.mp3\');">Always show count ON</a><label>(show number of wrinklers since your last shiny every time you pop a wrinkler)</label></div>'
+				'<div class="listing"><a class="smallFancyButton prefButton option' + WrinklerInfoMod.config.alwaysShowCount ? '' : 'off' + '" id="alwaysShowCountButton" onclick="WrinklerInfoMod.ToggleOption(\'alwaysShowCount\'); PlaySound(\'snd/tick.mp3\');">Always show count ' + WrinklerInfoMod.config.alwaysShowCount ? 'ON' : 'OFF' + '</a><label>(show number of wrinklers since your last shiny every time you pop a wrinkler)</label></div>'
 			);
 		});
 		
@@ -94,19 +91,14 @@ WrinklerInfoMod.launch = function(){
 		}
 	}
 
-	WrinklerInfoMod.ToggleOption = function(optionName, onName, offName)
+	WrinklerInfoMod.ToggleOption = function(optionName)
 	{
 		configName = 'WrinklerInfoMod.config.' + optionName
 		currentlyOn = eval(configName);
 		if (currentlyOn){
 			eval(configName + ' = false');
-			eval('document.getElementById("' + optionName + 'Button").className = "smallFancyButton prefButton option off"');
-			eval('document.getElementById("' + optionName + 'Button").innerHTML = ' + offName);
-		}
 		else {
 			eval(configName + ' = true');
-			eval('document.getElementById("' + optionName + 'Button").className = "smallFancyButton prefButton option"');
-			eval('document.getElementById("' + optionName + 'Button").innerHTML = ' + onName);
 		}
 	}
 
