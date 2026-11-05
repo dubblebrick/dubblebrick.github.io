@@ -6,13 +6,21 @@ BabyDragonMod.version = '0.1'
 BabyDragonMod.GameVersion = '2.058'
 BabyDragonMod.CCSEVersion = '2.035'
 
+BabyDragonMod.pics = [
+	'https://dubblebrick.github.io/ccmods/img/dragon1.png',
+	'https://dubblebrick.github.io/ccmods/img/dragon2.png',
+	'https://dubblebrick.github.io/ccmods/img/dragon3.png',
+	'https://dubblebrick.github.io/ccmods/img/dragon4.png',
+	'https://dubblebrick.github.io/ccmods/img/dragon5.png'
+]
+
 BabyDragonMod.launch = function(){
 	BabyDragonMod.init = function(){
 		CCSE.CreateSpecialObject(
 			'baby dragon',
 			function(){return true;},
 			function(picframe){
-				picframe.pic = [21,12];
+				picframe.pic = BabyDragonMod.pics[0];
 				picframe.frame = 0;
 			},
 			function(){Game.Notify('Under construction', '', [21,12]);}
