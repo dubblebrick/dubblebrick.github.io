@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '0.1';
+WrinklerInfoMod.version = '0.1.6';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -34,21 +34,20 @@ WrinklerInfoMod.launch = function(){
 			0
 		);
 */
-
-		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('Wrinklers popped (all time): ' + WrinklerInfoMod.info.totalWrinklers);
-		});
-
-		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('Shiny wrinklers popped: ' + WrinklerInfoMod.info.shinysFound);
-		});
-
-		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('Wrinklers popped since last shiny: ' + WrinklerInfoMod.info.sinceShiny);
-		});
-
 		Game.customStatsMenu.push(() => {
 			CCSE.AppendStatsVersionNumber(WrinklerInfoMod.name, WrinklerInfoMod.version);
+		});
+
+		Game.customStatsMenu.push(() => {
+			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped (all time):</b> ' + WrinklerInfoMod.info.totalWrinklers + '</div>');
+		});
+
+		Game.customStatsMenu.push(() => {
+			CCSE.AppendStatsSpecial('<div class="listing"><b>Shiny wrinklers popped:</b> ' + WrinklerInfoMod.info.shinysFound + '</div>');
+		});
+
+		Game.customStatsMenu.push(() => {
+			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + WrinklerInfoMod.info.sinceShiny + '</div>');
 		});
 
 		WrinklerInfoMod.isLoaded = 1;
