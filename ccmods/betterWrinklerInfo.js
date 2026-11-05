@@ -9,21 +9,12 @@ WrinklerInfoMod.CCSEVersion = '2.036';
 
 WrinklerInfoMod.launch = function(){
 	WrinklerInfoMod.init = function(){
-		// Replace Game.Notify call for exploding a wrinkler in the wrinkler update routine
-
-		CCSE.ReplaceCodeIntoFunction(
-			'Game.UpdateWrinklers',
-			'Game.Notify(me.type==1?loc("Exploded a shiny wrinkler"):loc("Exploded a wrinkler"),loc("Found <b>%1</b>!",loc("%1 cookie",LBeautify(me.sucked))),[19,8],6);',
-			'WrinklerInfoMod.ExplodedWrinklerMessage(me.type, me.sucked);',
-			0
-		);
-
+		WrinklerInfoMod.info = {};
 		CCSE.customLoad.push(() => {
 			if(CCSE.config.OtherMods.WrinklerInfoMod){
 				WrinklerInfoMod.info = CCSE.config.OtherMods.WrinklerInfoMod;
 			}
 			else{
-				WrinklerInfoMod.info = {}
 				WrinklerInfoMod.info.sinceShiny = Game.wrinklersPopped;
 				WrinklerInfoMod.info.shinysFound = 0;
 			}
@@ -32,6 +23,14 @@ WrinklerInfoMod.launch = function(){
 		CCSE.customSave.push(() => {
 			CCSE.config.OtherMods.WrinklerInfoMod = WrinklerInfoMod.info;
 		});
+
+		// Replace Game.Notify call for exploding a wrinkler in the wrinkler update routine
+		CCSE.ReplaceCodeIntoFunction(
+			'Game.UpdateWrinklers',
+			'Game.Notify(me.type==1?loc("Exploded a shiny wrinkler"):loc("Exploded a wrinkler"),loc("Found <b>%1</b>!",loc("%1 cookie",LBeautify(me.sucked))),[19,8],6);',
+			'WrinklerInfoMod.ExplodedWrinklerMessage(me.type, me.sucked);',
+			0
+		);
 
 		Game.customStatsMenu.push(() => {
 			CCSE.AppendStatsSpecial('Shiny wrinklers popped: ' + WrinklerInfoMod.info.shinysFound);
