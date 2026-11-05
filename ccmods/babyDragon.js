@@ -24,17 +24,17 @@ BabyDragonMod.launch = function(){
 			'baby dragon',
 			function(){return true;},
 			function(picframe){
-				picframe.pic = BabyDragonMod.pics[BabyDragonMod.stage];
+				picframe.pic = BabyDragonMod.pics[BabyDragonMod.BabyDragon.stage];
 				picframe.frame = 0;
 			},
-			function(){BabyDragonMod.ToggleSpecialMenu}
+			BabyDragonMod.ToggleSpecialMenu
 		);
 
 		BabyDragonMod.isLoaded = 1;
 	}
 
 	BabyDragonMod.ToggleSpecialMenu = function(str){
-		str = CCSE.SetSpecialMenuImage(str, BabyDragonMod.pics[BabyDragonMod.stage]);
+		str = CCSE.SetSpecialMenuImage(str, BabyDragonMod.pics[BabyDragonMod.BabyDragon.stage]);
 		
 		str += '<h3>Son of Krumblor<\h3>' + '<div  class="line"></div>' + 'Under construction';
 	}
