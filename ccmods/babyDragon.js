@@ -37,6 +37,8 @@ BabyDragonMod.launch = function(){
 		str = CCSE.SetSpecialMenuImage(str, BabyDragonMod.pics[BabyDragonMod.BabyDragon.stage]);
 		
 		str += '<h3>Son of Krumblor<\h3>' + '<div  class="line"></div>' + 'Under construction';
+
+		return str;
 	}
 
 	if(CCSE.ConfirmGameCCSEVersion(BabyDragonMod.name, BabyDragonMod.version, BabyDragonMod.GameVersion, BabyDragonMod.CCSEVersion))
