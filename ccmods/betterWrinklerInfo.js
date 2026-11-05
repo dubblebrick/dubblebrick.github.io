@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '0.2.0';
+WrinklerInfoMod.version = '0.2.1';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -63,7 +63,7 @@ WrinklerInfoMod.launch = function(){
 		});
 
 		if (WrinklerInfoMod.config.alwaysShowCount)
-			document.getElementById('alwaysShowCountButton').class = 'smallFancyButton prefButton option off';
+			document.getElementById('alwaysShowCountButton').className = 'smallFancyButton prefButton option off';
 		
 		WrinklerInfoMod.isLoaded = 1;
 
@@ -100,11 +100,11 @@ WrinklerInfoMod.launch = function(){
 		currentlyOn = eval(configName);
 		if (currentlyOn){
 			eval(configName + ' = false');
-			eval('document.getElementById("' + optionName + 'Button").class = "smallFancyButton prefButton option off"');
+			eval('document.getElementById("' + optionName + 'Button").className = "smallFancyButton prefButton option off"');
 		}
 		else {
 			eval(configName + ' = true');
-			eval('document.getElementById("' + optionName + 'Button").class = "smallFancyButton prefButton option"');
+			eval('document.getElementById("' + optionName + 'Button").className = "smallFancyButton prefButton option"');
 		}
 	}
 
