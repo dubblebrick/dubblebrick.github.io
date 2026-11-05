@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '0.2.10';
+WrinklerInfoMod.version = '0.2.11';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -106,33 +106,34 @@ WrinklerInfoMod.launch = function(){
 	}
 
 	WrinklerInfoMod.LoadData = function(){
-			if(CCSE.config.OtherMods.WrinklerInfoMod){
-				WrinklerInfoMod.stats = CCSE.config.OtherMods.WrinklerInfoMod.stats;
-				WrinklerInfoMod.config = CCSE.config.OtherMods.WrinklerInfoMod.config;
-			}
-			else{
-				WrinklerInfoMod.stats = {
-					sinceShiny: Game.wrinklersPopped,
-					shinysFound: 0,
-					totalWrinklers: Game.wrinklersPopped,
-					wrinklersThisAscension: Game.wrinklersPopped,
-					lastAscension: Game.seed
-				};
-				WrinklerInfoMod.config = {
-					alwaysShowCount: true
-				};
-			}
-			
-			// Resync save data if wrinklers were popped while the mod was unloaded (cannot detect shiny wrinklers or >1 ascension)
-			if (Game.wrinklersPopped > WrinklerInfoMod.stats.wrinklersThisAscension){
-				WrinklerInfoMod.stats.totalWrinklers += Game.wrinklersPopped - WrinklerInfoMod.stats.wrinklersThisAscension;
-				WrinklerInfoMod.stats.sinceShiny += Game.wrinklersPopped - WrinklerInfoMod.stats.wrinklersThisAscension;
-				WrinklerInfoMod.stats.wrinklersThisAscension = Game.wrinklersPopped;
-			}
-			else if (Game.seed != WrinklerInfoMod.stats.lastAscension || Game.wrinklersPopped < WrinklerInfoMod.stats.wrinklersThisAscension){
-				WrinklerInfoMod.stats.totalWrinklers += Game.wrinklersPopped;
-				WrinklerInfoMod.stats.sinceShiny += Game.wrinklersPopped;
-				WrinklerInfoMod.stats.wrinklersThisAscension = Game.wrinklersPopped;
+		if(CCSE.config.OtherMods.WrinklerInfoMod){
+			WrinklerInfoMod.stats = CCSE.config.OtherMods.WrinklerInfoMod.stats;
+			WrinklerInfoMod.config = CCSE.config.OtherMods.WrinklerInfoMod.config;
+		}
+		else{
+			WrinklerInfoMod.stats = {
+				sinceShiny: Game.wrinklersPopped,
+				shinysFound: 0,
+				totalWrinklers: Game.wrinklersPopped,
+				wrinklersThisAscension: Game.wrinklersPopped,
+				lastAscension: Game.seed
+			};
+			WrinklerInfoMod.config = {
+				alwaysShowCount: true
+			};
+		}
+		
+		// Resync save data if wrinklers were popped while the mod was unloaded (cannot detect shiny wrinklers or >1 ascension)
+		if (Game.wrinklersPopped > WrinklerInfoMod.stats.wrinklersThisAscension){
+			WrinklerInfoMod.stats.totalWrinklers += Game.wrinklersPopped - WrinklerInfoMod.stats.wrinklersThisAscension;
+			WrinklerInfoMod.stats.sinceShiny += Game.wrinklersPopped - WrinklerInfoMod.stats.wrinklersThisAscension;
+			WrinklerInfoMod.stats.wrinklersThisAscension = Game.wrinklersPopped;
+		}
+		else if (Game.seed != WrinklerInfoMod.stats.lastAscension || Game.wrinklersPopped < WrinklerInfoMod.stats.wrinklersThisAscension){
+			WrinklerInfoMod.stats.totalWrinklers += Game.wrinklersPopped;
+			WrinklerInfoMod.stats.sinceShiny += Game.wrinklersPopped;
+			WrinklerInfoMod.stats.wrinklersThisAscension = Game.wrinklersPopped;
+		}
 	}
 
 	if(CCSE.ConfirmGameCCSEVersion(WrinklerInfoMod.name, WrinklerInfoMod.version, WrinklerInfoMod.GameVersion, WrinklerInfoMod.CCSEVersion))
