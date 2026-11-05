@@ -3,15 +3,14 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '0.2.7';
+WrinklerInfoMod.version = '0.2.8';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
 WrinklerInfoMod.launch = function(){
 	WrinklerInfoMod.init = function(){
-		WrinklerInfoMod.config = {
-			alwaysShowCount: true
-		}
+		WrinklerInfoMod.config = {};
+		WrinklerInfoMod.stats = {};
 		CCSE.customLoad.push(() => {
 			if(CCSE.config.OtherMods.WrinklerInfoMod){
 				WrinklerInfoMod.stats = CCSE.config.OtherMods.WrinklerInfoMod.stats;
@@ -21,17 +20,34 @@ WrinklerInfoMod.launch = function(){
 				WrinklerInfoMod.stats = {
 					sinceShiny: Game.wrinklersPopped,
 					shinysFound: 0,
-					totalWrinklers: Game.wrinklersPopped
+					totalWrinklers: Game.wrinklersPopped,
+					wrinklersThisAscension: Game.wrinklersPopped,
+					lastAscension: Game.seed
 				};
+				WrinklerInfoMod.config = {
+					alwaysShowCount: true
+				};
+			}
+			
+			// Resync save data if wrinklers were popped while the mod was unloaded (cannot detect shiny wrinklers or >1 ascension)
+			if (Game.wrinklersPopped > WrinklerInfoMod.stats.wrinklersThisAscension){
+				WrinklerInfoMod.stats.totalWrinklers += Game.wrinklersPopped - WrinklerInfoMod.stats.wrinklersThisAscension;
+				WrinklerInfoMod.stats.sinceShiny += Game.wrinklersPopped - WrinklerInfoMod.stats.wrinklersThisAscension;
+				WrinklerInfoMod.stats.wrinklersThisAscension = Game.wrinklersPopped;
+			}
+			else if (Game.seed != WrinklerInfoMod.stats.lastAscension || Game.wrinklersPopped < WrinklerInfoMod.stats.wrinklersThisAscension){
+				WrinklerInfoMod.stats.totalWrinklers += Game.wrinklersPopped;
+				WrinklerInfoMod.stats.sinceShiny += Game.wrinklersPopped;
+				WrinklerInfoMod.stats.wrinklersThisAscension = Game.wrinklersPopped;
 			}
 		});
 
 		CCSE.customSave.push(() => {
+			WrinklerInfoMod.stats.saveVersion = WrinklerInfoMod.version;
+			WrinklerInfoMod.stats.lastAscension = Game.seed;
 			CCSE.config.OtherMods.WrinklerInfoMod.stats = WrinklerInfoMod.stats;
 			CCSE.config.OtherMods.WrinklerInfoMod.config = WrinklerInfoMod.config;
 		});
-
-		WrinklerInfoMod.stats.saveVersion = WrinklerInfoMod.version
 
 		// Replace Game.Notify call for exploding a wrinkler in the wrinkler update routine
 /*
