@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '0.2.5';
+WrinklerInfoMod.version = '0.2.6';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -100,15 +100,15 @@ WrinklerInfoMod.launch = function(){
 	WrinklerInfoMod.ToggleOption = function(optionName, button, on, off, invert)
 	{
 		if (WrinklerInfoMod.config[optionName]){
-			document.getElementByID(button).innerHTML = off;
+			document.getElementById(button).innerHTML = off;
 			WrinklerInfoMod.config[optionName] = false;
 		}
 		else{
-			document.getElementByID(button).innerHTML = on;
+			document.getElementById(button).innerHTML = on;
 			WrinklerInfoMod.config[optionName] = true;
 		}
 		
-		document.getElementByID(button).className = 'smallFancyButton prefButton option' + ((WrinklerInfoMod.config[optionName]^invert) ? '' : ' off');
+		document.getElementById(button).className = 'smallFancyButton prefButton option' + ((WrinklerInfoMod.config[optionName]^invert) ? '' : ' off');
 	}
 
 	if(CCSE.ConfirmGameCCSEVersion(WrinklerInfoMod.name, WrinklerInfoMod.version, WrinklerInfoMod.GameVersion, WrinklerInfoMod.CCSEVersion))
