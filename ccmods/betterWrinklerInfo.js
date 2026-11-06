@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '1.1.4';
+WrinklerInfoMod.version = '1.1.5';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -52,7 +52,7 @@ WrinklerInfoMod.launch = function(){
 			0,
 			inRectEval			
 		);
-/*
+
 		// Add condition for wrinkler popup so it doesn't say "+0 cookies" when you pop a wrinkler
 		CCSE.ReplaceCodeIntoFunction(
 			'Game.UpdateWrinklers',
@@ -61,7 +61,7 @@ WrinklerInfoMod.launch = function(){
 			-1,
 			inRectEval
 		);
-*/
+
 		// Replace wrinkler notification with a more detailed one
 		CCSE.ReplaceCodeIntoFunction(
 			'Game.UpdateWrinklers',
