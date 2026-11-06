@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '1.1.5';
+WrinklerInfoMod.version = '1.1.6';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -85,11 +85,8 @@ WrinklerInfoMod.launch = function(){
 		});
 
 		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) + '</div>');
-		});
-
-		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('<div class="listing"><b>Longest shiny wrinkler drought:</b> ' + numFormat.format(WrinklerInfoMod.stats.longestDrought) + '</div>');
+			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) +
+			'<small>' + numFormat.format(WrinklerInfoMod.stats.longestDrought) + '</small>' + '</div>');
 		});
 
 		Game.customOptionsMenu.push(() => {
