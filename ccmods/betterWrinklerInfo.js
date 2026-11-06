@@ -35,6 +35,17 @@ WrinklerInfoMod.launch = function(){
 				return false;\
 			}';
 
+
+		// Insert code which increments mod stats when a wrinkler is popped
+		CCSE.ReplaceCodeIntoFunction(
+			'Game.UpdateWrinklers',
+			'Game.wrinklersPopped++;',
+			'WrinklerInfoMod.AddWrinklers(1);',
+			1,
+			inRectFunc
+		);
+	
+		// Replace condition for displaying the wrinkler notification
 		CCSE.ReplaceCodeIntoFunction(
 			'Game.UpdateWrinklers',
 			'if (me.sucked>0.5)',
@@ -43,6 +54,7 @@ WrinklerInfoMod.launch = function(){
 			inRectFunc			
 		);
 
+		// Replace wrinkler notification with a more detailed one
 		CCSE.ReplaceCodeIntoFunction(
 			'Game.UpdateWrinklers',
 			'Game.Notify(me.type==1?loc("Exploded a shiny wrinkler"):loc("Exploded a wrinkler"),loc("Found <b>%1</b>!",loc("%1 cookie",LBeautify(me.sucked))),[19,8],6);',
@@ -86,7 +98,6 @@ WrinklerInfoMod.launch = function(){
 	}
 
 	WrinklerInfoMod.ExplodedWrinklerMessage = function(type, numCookies){
-		WrinklerInfoMod.AddWrinkler(1);
 		if (type == 1){
 			Game.Notify(
 				'Exploded a shiny wrinkler!!!',
