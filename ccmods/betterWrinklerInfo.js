@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '1.1.2';
+WrinklerInfoMod.version = '1.1.3';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -56,7 +56,7 @@ WrinklerInfoMod.launch = function(){
 		// Add condition for 
 		CCSE.ReplaceCodeIntoFunction(
 			'Game.UpdateWrinklers',
-			'Game.Popup(\'<div style="font-size:80%;">\'+loc("+%1!",loc("%1 cookie",LBeautify(me.sucked)))+\'</div>\',Game.mouseX,Game.mouseY);'
+			'Game.Popup(\'<div style="font-size:80%;">\'+loc("+%1!",loc("%1 cookie",LBeautify(me.sucked)))+\'</div>\',Game.mouseX,Game.mouseY);',
 			'if (me.sucked > 0.5)',
 			-1,
 			inRectEval
