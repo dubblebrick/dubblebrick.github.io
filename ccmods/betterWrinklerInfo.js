@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '1.1.3';
+WrinklerInfoMod.version = '1.1.4';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -112,10 +112,12 @@ WrinklerInfoMod.launch = function(){
 			Game.Notify(
 				'Exploded a shiny wrinkler!!!',
 				(numCookies > 0.5 ? loc('Found <b>%1</b>!',loc('%1 cookie',LBeautify(numCookies))) + ' ' : '') +
-				'It took ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) + (WrinklerInfoMod.stats.shinysFound == 0 ? ' wrinklers for your first shiny.' : ' wrinklers since your last shiny.'),
+				'It took ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) + ' wrinklers since your last shiny.',
 				[24,12],
 				18
 			);
+			// Reset counter here instead of during the AddWrinkler method so the texbox displays properly
+			WrinklerInfoMod.stats.sinceShiny = 0;
 		}
 		else{
 			Game.Notify(
@@ -189,7 +191,6 @@ WrinklerInfoMod.launch = function(){
 				WrinklerInfoMod.stats.longestDrought = WrinklerInfoMod.stats.sinceShiny;
 		}
 		else{
-			WrinklerInfoMod.stats.sinceShiny = 0;
 			WrinklerInfoMod.stats.shinysFound += num;
 		}
 	}
