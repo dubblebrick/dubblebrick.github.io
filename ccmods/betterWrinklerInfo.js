@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '1.1.1';
+WrinklerInfoMod.version = '1.1.2';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -22,9 +22,8 @@ WrinklerInfoMod.launch = function(){
 
 		CCSE.customLoad.push(WrinklerInfoMod.LoadData);
 
-		// Replace Game.Notify call for exploding a wrinkler in the wrinkler update routine
-
-		inRectFunc = 'function inRect(x,y,rect){ \
+		// This function needs to be declared before modifying Game.UpdateWrinklers since it is declared out of scope
+		const inRectEval = 'function inRect(x,y,rect){ \
 				var dx = x+Math.sin(-rect.r)*(-(rect.h/2-rect.o)),dy=y+Math.cos(-rect.r)*(-(rect.h/2-rect.o)); \
 				var h1 = Math.sqrt(dx*dx + dy*dy); \
 				var currA = Math.atan2(dy,dx); \
@@ -42,7 +41,7 @@ WrinklerInfoMod.launch = function(){
 			'Game.wrinklersPopped++;',
 			'WrinklerInfoMod.AddWrinklers(1, me.type);',
 			1,
-			inRectFunc
+			inRectEval
 		);
 
 		// Replace condition for displaying the wrinkler notification
@@ -51,7 +50,16 @@ WrinklerInfoMod.launch = function(){
 			'if (me.sucked>0.5)',
 			'if (me.sucked>0.5 || me.type == 1 || WrinklerInfoMod.config.alwaysShowCount)',
 			0,
-			inRectFunc			
+			inRectEval			
+		);
+
+		// Add condition for 
+		CCSE.ReplaceCodeIntoFunction(
+			'Game.UpdateWrinklers',
+			'Game.Popup(\'<div style="font-size:80%;">\'+loc("+%1!",loc("%1 cookie",LBeautify(me.sucked)))+\'</div>\',Game.mouseX,Game.mouseY);'
+			'if (me.sucked > 0.5)',
+			-1,
+			inRectEval
 		);
 
 		// Replace wrinkler notification with a more detailed one
@@ -60,7 +68,7 @@ WrinklerInfoMod.launch = function(){
 			'Game.Notify(me.type==1?loc("Exploded a shiny wrinkler"):loc("Exploded a wrinkler"),loc("Found <b>%1</b>!",loc("%1 cookie",LBeautify(me.sucked))),[19,8],6);',
 			'WrinklerInfoMod.ExplodedWrinklerMessage(me.type, me.sucked);',
 			0,
-			inRectFunc			
+			inRectEval			
 		);
 		
 		Game.customStatsMenu.push(() => {
