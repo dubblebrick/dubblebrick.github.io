@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '0.3.6';
+WrinklerInfoMod.version = '1.0.0';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -40,18 +40,9 @@ WrinklerInfoMod.launch = function(){
 		CCSE.ReplaceCodeIntoFunction(
 			'Game.UpdateWrinklers',
 			'Game.wrinklersPopped++;',
-			'WrinklerInfoMod.AddWrinklers(1);',
+			'WrinklerInfoMod.AddWrinklers(1, me.type);',
 			1,
 			inRectFunc
-		);
-
-		// Replace wrinkler notification with a more detailed one
-		CCSE.ReplaceCodeIntoFunction(
-			'Game.UpdateWrinklers',
-			'Game.Notify(me.type==1?loc("Exploded a shiny wrinkler"):loc("Exploded a wrinkler"),loc("Found <b>%1</b>!",loc("%1 cookie",LBeautify(me.sucked))),[19,8],6);',
-			'WrinklerInfoMod.ExplodedWrinklerMessage(me.type, me.sucked);',
-			0,
-			inRectFunc			
 		);
 
 		// Replace condition for displaying the wrinkler notification
@@ -59,6 +50,15 @@ WrinklerInfoMod.launch = function(){
 			'Game.UpdateWrinklers',
 			'if (me.sucked>0.5)',
 			'if (me.sucked>0.5 || me.type == 1 || WrinklerInfoMod.config.alwaysShowCount)',
+			0,
+			inRectFunc			
+		);
+
+		// Replace wrinkler notification with a more detailed one
+		CCSE.ReplaceCodeIntoFunction(
+			'Game.UpdateWrinklers',
+			'Game.Notify(me.type==1?loc("Exploded a shiny wrinkler"):loc("Exploded a wrinkler"),loc("Found <b>%1</b>!",loc("%1 cookie",LBeautify(me.sucked))),[19,8],6);',
+			'WrinklerInfoMod.ExplodedWrinklerMessage(me.type, me.sucked);',
 			0,
 			inRectFunc			
 		);
@@ -101,18 +101,16 @@ WrinklerInfoMod.launch = function(){
 		if (type == 1){
 			Game.Notify(
 				'Exploded a shiny wrinkler!!!',
-				(numCookies > 0.5 ? loc('Found <b>%1</b>!',loc('%1 cookie',LBeautify(numCookies))) + '\n' : '') +
+				(numCookies > 0.5 ? loc('Found <b>%1</b>!',loc('%1 cookie',LBeautify(numCookies))) : '') +
 				'It took ' + WrinklerInfoMod.stats.sinceShiny + (WrinklerInfoMod.stats.shinysFound == 0 ? ' wrinklers for your first shiny.' : ' wrinklers since your last shiny.'),
 				[24,12],
 				18
 			);
-			WrinklerInfoMod.stats.sinceShiny = 0;
-			WrinklerInfoMod.stats.shinysFound++;
 		}
 		else{
 			Game.Notify(
 				'Exploded a wrinkler',
-				(numCookies > 0.5 ? loc('Found <b>%1</b>!',loc('%1 cookie',LBeautify(numCookies))) + '\n' : '') +
+				(numCookies > 0.5 ? loc('Found <b>%1</b>!',loc('%1 cookie',LBeautify(numCookies)))' : '') +
 				(WrinklerInfoMod.config.alwaysShowCount ? 'You have popped ' + WrinklerInfoMod.stats.sinceShiny + (WrinklerInfoMod.stats.shinysFound == 0 ? ' wrinklers without a shiny.' : ' wrinklers since your last shiny.') : ''),
 				[19,8],
 				6
@@ -161,23 +159,29 @@ WrinklerInfoMod.launch = function(){
 		
 		// Resync save data if wrinklers were popped while the mod was unloaded (cannot detect shiny wrinklers or >1 ascension)
 		if (Game.wrinklersPopped > WrinklerInfoMod.stats.wrinklersThisAscension){
-			WrinklerInfoMod.AddWrinklers(Game.wrinklersPopped - WrinklerInfoMod.stats.wrinklersThisAscension);
+			WrinklerInfoMod.AddWrinklers(Game.wrinklersPopped - WrinklerInfoMod.stats.wrinklersThisAscension, 0);
 			WrinklerInfoMod.stats.wrinklersThisAscension = Game.wrinklersPopped;
 		}
 		else if (Game.seed != WrinklerInfoMod.stats.lastAscension || Game.wrinklersPopped < WrinklerInfoMod.stats.wrinklersThisAscension){
-			WrinklerInfoMod.AddWrinklers(Game.wrinklersPopped);
+			WrinklerInfoMod.AddWrinklers(Game.wrinklersPopped, 0);
 			WrinklerInfoMod.stats.wrinklersThisAscension = Game.wrinklersPopped;
 		}
 
 		console.log('[WrinklerInfoMod] Data successfully loaded');
 	}
 
-	WrinklerInfoMod.AddWrinklers = function(num){
+	WrinklerInfoMod.AddWrinklers = function(num, type){
 		WrinklerInfoMod.stats.totalWrinklers += num;
-		WrinklerInfoMod.stats.sinceShiny += num;
-		if (WrinklerInfoMod.stats.sinceShiny > WrinklerInfoMod.stats.longestDrought)
-			WrinklerInfoMod.stats.longestDrought = WrinklerInfoMod.stats.sinceShiny;
 		WrinklerInfoMod.stats.wrinklersThisAscension += num;
+		if (type == 0){
+			WrinklerInfoMod.stats.sinceShiny += num;
+			if (WrinklerInfoMod.stats.sinceShiny > WrinklerInfoMod.stats.longestDrought)
+				WrinklerInfoMod.stats.longestDrought = WrinklerInfoMod.stats.sinceShiny;
+		}
+		else{
+			WrinklerInfoMod.stats.sinceShiny = 0;
+			WrinklerInfoMod.stats.shinysFound += num;
+		}
 	}
 
 	if(CCSE.ConfirmGameCCSEVersion(WrinklerInfoMod.name, WrinklerInfoMod.version, WrinklerInfoMod.GameVersion, WrinklerInfoMod.CCSEVersion))
