@@ -86,7 +86,7 @@ WrinklerInfoMod.launch = function(){
 
 		Game.customStatsMenu.push(() => {
 			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) +
-			'<small>(longest drought: ' + numFormat.format(WrinklerInfoMod.stats.longestDrought) + ')</small>' + '</div>');
+			' <small>(longest drought: ' + numFormat.format(WrinklerInfoMod.stats.longestDrought) + ')</small>' + '</div>');
 		});
 
 		Game.customOptionsMenu.push(() => {
