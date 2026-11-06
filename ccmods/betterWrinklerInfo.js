@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '1.1.7';
+WrinklerInfoMod.version = '1.1.8';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -15,6 +15,7 @@ WrinklerInfoMod.launch = function(){
 		CCSE.customSave.push(() => {
 			WrinklerInfoMod.stats.saveVersion = WrinklerInfoMod.version;
 			WrinklerInfoMod.stats.lastAscension = Game.seed;
+			WrinklerInfoMod.stats.wrinklersThisAscension = Game.wrinklersPopped;
 			if (!CCSE.config.OtherMods.WrinklerInfoMod) CCSE.config.OtherMods.WrinklerInfoMod = {};
 			CCSE.config.OtherMods.WrinklerInfoMod.stats = WrinklerInfoMod.stats;
 			CCSE.config.OtherMods.WrinklerInfoMod.config = WrinklerInfoMod.config;
@@ -69,6 +70,13 @@ WrinklerInfoMod.launch = function(){
 			'WrinklerInfoMod.ExplodedWrinklerMessage(me.type, me.sucked);',
 			0,
 			inRectEval			
+		);
+
+		CCSE.ReplaceCodeIntoFunction(
+			'Game.HardReset',
+			'Game.Reset(1);',
+			'WrinklerInfoMod.stats = { sinceShiny: 0, shinysFound: 0, totalWrinklers: 0, longestDrought: 0 };',
+			-1
 		);
 		
 		Game.customStatsMenu.push(() => {
@@ -181,7 +189,6 @@ WrinklerInfoMod.launch = function(){
 
 	WrinklerInfoMod.AddWrinklers = function(num, type){
 		WrinklerInfoMod.stats.totalWrinklers += num;
-		WrinklerInfoMod.stats.wrinklersThisAscension += num;
 		if (type == 0){
 			WrinklerInfoMod.stats.sinceShiny += num;
 			if (WrinklerInfoMod.stats.sinceShiny > WrinklerInfoMod.stats.longestDrought)
