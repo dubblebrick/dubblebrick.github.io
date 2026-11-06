@@ -52,8 +52,8 @@ WrinklerInfoMod.launch = function(){
 			0,
 			inRectEval			
 		);
-
-		// Add condition for 
+/*
+		// Add condition for wrinkler popup so it doesn't say "+0 cookies" when you pop a wrinkler
 		CCSE.ReplaceCodeIntoFunction(
 			'Game.UpdateWrinklers',
 			'Game.Popup(\'<div style="font-size:80%;">\'+loc("+%1!",loc("%1 cookie",LBeautify(me.sucked)))+\'</div>\',Game.mouseX,Game.mouseY);',
@@ -61,7 +61,7 @@ WrinklerInfoMod.launch = function(){
 			-1,
 			inRectEval
 		);
-
+*/
 		// Replace wrinkler notification with a more detailed one
 		CCSE.ReplaceCodeIntoFunction(
 			'Game.UpdateWrinklers',
