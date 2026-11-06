@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '1.1.8';
+WrinklerInfoMod.version = '1.1.9';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -85,16 +85,12 @@ WrinklerInfoMod.launch = function(){
 
 		const numFormat = new Intl.NumberFormat('en-US');
 		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped (all time):</b> ' + numFormat.format(WrinklerInfoMod.stats.totalWrinklers) + '</div>');
-		});
-
-		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('<div class="listing"><b>Shiny wrinklers popped:</b> ' + numFormat.format(WrinklerInfoMod.stats.shinysFound) + '</div>');
-		});
-
-		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) +
-			' <small>(longest drought: ' + numFormat.format(WrinklerInfoMod.stats.longestDrought) + ')</small>' + '</div>');
+			CCSE.AppendStatsSpecial(
+				'<div class="listing"><b>Wrinklers popped (all time):</b> ' + numFormat.format(WrinklerInfoMod.stats.totalWrinklers) + '</div><br>' +
+				'<div class="listing"><b>Shiny wrinklers popped:</b> ' + numFormat.format(WrinklerInfoMod.stats.shinysFound) + '</div><br>' +
+				'<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) +
+				' <small>(longest drought: ' + numFormat.format(WrinklerInfoMod.stats.longestDrought) + ')</small>' + '</div>'
+			);
 		});
 
 		Game.customOptionsMenu.push(() => {
