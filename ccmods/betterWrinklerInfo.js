@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '0.3.1';
+WrinklerInfoMod.version = '0.3.2';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -30,21 +30,17 @@ WrinklerInfoMod.launch = function(){
 			'WrinklerInfoMod.ExplodedWrinklerMessage(me.type, me.sucked);',
 			0,
 			// Code transcribed from the original source code because this function has a weird scope
-			() => {
-				function inRect(x,y,rect)
-				{
-					//find out if the point x,y is in the rotated rectangle rect{w,h,r,o} (width,height,rotation in radians,y-origin) (needs to be normalized)
-					//I found this somewhere online I guess
-					var dx = x+Math.sin(-rect.r)*(-(rect.h/2-rect.o)),dy=y+Math.cos(-rect.r)*(-(rect.h/2-rect.o));
-					var h1 = Math.sqrt(dx*dx + dy*dy);
-					var currA = Math.atan2(dy,dx);
-					var newA = currA - rect.r;
-					var x2 = Math.cos(newA) * h1;
-					var y2 = Math.sin(newA) * h1;
-					if (x2 > -0.5 * rect.w && x2 < 0.5 * rect.w && y2 > -0.5 * rect.h && y2 < 0.5 * rect.h) return true;
-					return false;
-				}
-			}
+			'function inRect(x,y,rect) \
+			{ \
+				var dx = x+Math.sin(-rect.r)*(-(rect.h/2-rect.o)),dy=y+Math.cos(-rect.r)*(-(rect.h/2-rect.o)); \
+				var h1 = Math.sqrt(dx*dx + dy*dy); \
+				var currA = Math.atan2(dy,dx); \
+				var newA = currA - rect.r; \
+				var x2 = Math.cos(newA) * h1; \
+				var y2 = Math.sin(newA) * h1; \
+				if (x2 > -0.5 * rect.w && x2 < 0.5 * rect.w && y2 > -0.5 * rect.h && y2 < 0.5 * rect.h) return true; \
+				return false;\
+			}'
 		);
 
 		Game.customStatsMenu.push(() => {
@@ -69,11 +65,7 @@ WrinklerInfoMod.launch = function(){
 				WrinklerInfoMod.GetOptionsMenu()
 			);
 		});
-
-		
-		
 		WrinklerInfoMod.isLoaded = 1;
-
 		Game.Notify(WrinklerInfoMod.name + ' v' + WrinklerInfoMod.version + ' loaded!', '', [24,12], 6);
 	}
 
@@ -150,6 +142,8 @@ WrinklerInfoMod.launch = function(){
 			WrinklerInfoMod.stats.sinceShiny += Game.wrinklersPopped;
 			WrinklerInfoMod.stats.wrinklersThisAscension = Game.wrinklersPopped;
 		}
+
+		console.log('[WrinklerInfoMod] Data successfull loaded');
 	}
 
 	if(CCSE.ConfirmGameCCSEVersion(WrinklerInfoMod.name, WrinklerInfoMod.version, WrinklerInfoMod.GameVersion, WrinklerInfoMod.CCSEVersion))
