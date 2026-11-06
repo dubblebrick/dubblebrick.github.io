@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '1.0.1';
+WrinklerInfoMod.version = '1.1.0';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -62,25 +62,26 @@ WrinklerInfoMod.launch = function(){
 			0,
 			inRectFunc			
 		);
-
+		
 		Game.customStatsMenu.push(() => {
 			CCSE.AppendStatsVersionNumber(WrinklerInfoMod.name, WrinklerInfoMod.version);
 		});
 
+		const numFormat = new Intl.NumberFormat('en-US');
 		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped (all time):</b> ' + WrinklerInfoMod.stats.totalWrinklers + '</div>');
+			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped (all time):</b> ' + numFormat.format(WrinklerInfoMod.stats.totalWrinklers) + '</div>');
 		});
 
 		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('<div class="listing"><b>Shiny wrinklers popped:</b> ' + WrinklerInfoMod.stats.shinysFound + '</div>');
+			CCSE.AppendStatsSpecial('<div class="listing"><b>Shiny wrinklers popped:</b> ' + numFormat.format(WrinklerInfoMod.stats.shinysFound) + '</div>');
 		});
 
 		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + WrinklerInfoMod.stats.sinceShiny + '</div>');
+			CCSE.AppendStatsSpecial('<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) + '</div>');
 		});
 
 		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial('<div class="listing"><b>Longest shiny wrinkler drought:</b> ' + WrinklerInfoMod.stats.longestDrought + '</div>');
+			CCSE.AppendStatsSpecial('<div class="listing"><b>Longest shiny wrinkler drought:</b> ' + numFormat.format(WrinklerInfoMod.stats.longestDrought) + '</div>');
 		});
 
 		Game.customOptionsMenu.push(() => {
@@ -98,11 +99,12 @@ WrinklerInfoMod.launch = function(){
 	}
 
 	WrinklerInfoMod.ExplodedWrinklerMessage = function(type, numCookies){
+		const numFormat = new Intl.NumberFormat('en-US');
 		if (type == 1){
 			Game.Notify(
 				'Exploded a shiny wrinkler!!!',
 				(numCookies > 0.5 ? loc('Found <b>%1</b>!',loc('%1 cookie',LBeautify(numCookies))) : '') +
-				'It took ' + WrinklerInfoMod.stats.sinceShiny + (WrinklerInfoMod.stats.shinysFound == 0 ? ' wrinklers for your first shiny.' : ' wrinklers since your last shiny.'),
+				'It took ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) + (WrinklerInfoMod.stats.shinysFound == 0 ? ' wrinklers for your first shiny.' : ' wrinklers since your last shiny.'),
 				[24,12],
 				18
 			);
@@ -111,7 +113,7 @@ WrinklerInfoMod.launch = function(){
 			Game.Notify(
 				'Exploded a wrinkler',
 				(numCookies > 0.5 ? loc('Found <b>%1</b>!',loc('%1 cookie',LBeautify(numCookies))) : '') +
-				(WrinklerInfoMod.config.alwaysShowCount ? 'You have popped ' + WrinklerInfoMod.stats.sinceShiny + (WrinklerInfoMod.stats.shinysFound == 0 ? ' wrinklers without a shiny.' : ' wrinklers since your last shiny.') : ''),
+				(WrinklerInfoMod.config.alwaysShowCount ? 'You have popped ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) + (WrinklerInfoMod.stats.shinysFound == 0 ? ' wrinklers without a shiny.' : ' wrinklers since your last shiny.') : ''),
 				[19,8],
 				6
 			);
