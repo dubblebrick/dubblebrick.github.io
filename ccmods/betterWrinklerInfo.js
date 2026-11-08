@@ -134,6 +134,8 @@ WrinklerInfoMod.launch = function(){
 		str += WrinklerInfoMod.config.showProb ? + ' <small>(probability: ' + percentFormat.format(Math.pow(0.9999, WrinklerInfoMod.stats.sinceShiny)) + ')</small></div>' : '</div>';
 		str += '<div class="listing"><b>Longest shiny wrinkler drought:</b> ' + numFormat.format(WrinklerInfoMod.stats.longestDrought);
 		str += WrinklerInfoMod.config.showProb ? + ' <small>(probability: ' + percentFormat.format(Math.pow(0.9999, WrinklerInfoMod.stats.longestDrought)) + ')</small></div>' : '</div>';
+
+		return str;
 	}
 
 	WrinklerInfoMod.GetOptionsMenu = function(){
