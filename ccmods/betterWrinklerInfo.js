@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '1.2.0';
+WrinklerInfoMod.version = '1.2.1';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -131,9 +131,9 @@ WrinklerInfoMod.launch = function(){
 		str = '<div class="listing"><b>Wrinklers popped (all time):</b> ' + numFormat.format(WrinklerInfoMod.stats.totalWrinklers) + '</div>';
 		str += '<div class="listing"><b>Shiny wrinklers popped:</b> ' + numFormat.format(WrinklerInfoMod.stats.shinysFound) + '</div>';
 		str += '<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny);
-		str += WrinklerInfoMod.config.showProb ? + ' <small>(probability: ' + percentFormat.format(Math.pow(0.9999, WrinklerInfoMod.stats.sinceShiny)) + ')</small></div>' : '</div>';
+		str += WrinklerInfoMod.config.showProb ? ' <small>(probability: ' + percentFormat.format(Math.pow(0.9999, WrinklerInfoMod.stats.sinceShiny)) + ')</small></div>' : '</div>';
 		str += '<div class="listing"><b>Longest shiny wrinkler drought:</b> ' + numFormat.format(WrinklerInfoMod.stats.longestDrought);
-		str += WrinklerInfoMod.config.showProb ? + ' <small>(probability: ' + percentFormat.format(Math.pow(0.9999, WrinklerInfoMod.stats.longestDrought)) + ')</small></div>' : '</div>';
+		str += WrinklerInfoMod.config.showProb ? ' <small>(probability: ' + percentFormat.format(Math.pow(0.9999, WrinklerInfoMod.stats.longestDrought)) + ')</small></div>' : '</div>';
 
 		return str;
 	}
