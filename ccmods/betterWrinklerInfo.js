@@ -3,7 +3,7 @@ if(WrinklerInfoMod === undefined) var WrinklerInfoMod = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 WrinklerInfoMod.name = 'Better Wrinkler Info';
-WrinklerInfoMod.version = '1.1.9';
+WrinklerInfoMod.version = '1.2.0';
 WrinklerInfoMod.GameVersion = '2.058';
 WrinklerInfoMod.CCSEVersion = '2.036';
 
@@ -83,14 +83,8 @@ WrinklerInfoMod.launch = function(){
 			CCSE.AppendStatsVersionNumber(WrinklerInfoMod.name, WrinklerInfoMod.version);
 		});
 
-		const numFormat = new Intl.NumberFormat('en-US');
 		Game.customStatsMenu.push(() => {
-			CCSE.AppendStatsSpecial(
-				'<div class="listing"><b>Wrinklers popped (all time):</b> ' + numFormat.format(WrinklerInfoMod.stats.totalWrinklers) + '</div>' +
-				'<div class="listing"><b>Shiny wrinklers popped:</b> ' + numFormat.format(WrinklerInfoMod.stats.shinysFound) + '</div>' +
-				'<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny) +
-				' <small>(longest drought: ' + numFormat.format(WrinklerInfoMod.stats.longestDrought) + ')</small>' + '</div>'
-			);
+			CCSE.AppendStatsSpecial(WrinklerInfoMod.GetStatsMenu());
 		});
 
 		Game.customOptionsMenu.push(() => {
@@ -131,8 +125,21 @@ WrinklerInfoMod.launch = function(){
 		}
 	}
 
+	WrinklerInfoMod.GetStatsMenu = function(){
+		const numFormat = new Intl.NumberFormat('en-US');
+		const percentFormat = new Intl.NumberFormat('en-US', { style: 'percent'});
+		str = '<div class="listing"><b>Wrinklers popped (all time):</b> ' + numFormat.format(WrinklerInfoMod.stats.totalWrinklers) + '</div>';
+		str += '<div class="listing"><b>Shiny wrinklers popped:</b> ' + numFormat.format(WrinklerInfoMod.stats.shinysFound) + '</div>';
+		str += '<div class="listing"><b>Wrinklers popped since last shiny:</b> ' + numFormat.format(WrinklerInfoMod.stats.sinceShiny);
+		str += WrinklerInfoMod.config.showProb ? + ' <small>(probability: ' + percentFormat.format(Math.pow(0.9999, WrinklerInfoMod.stats.sinceShiny)) + ')</small></div>' : '</div>';
+		str += '<div class="listing"><b>Longest shiny wrinkler drought:</b> ' + numFormat.format(WrinklerInfoMod.stats.longestDrought);
+		str += WrinklerInfoMod.config.showProb ? + ' <small>(probability: ' + percentFormat.format(Math.pow(0.9999, WrinklerInfoMod.stats.longestDrought)) + ')</small></div>' : '</div>';
+	}
+
 	WrinklerInfoMod.GetOptionsMenu = function(){
 		var str = '<div class="listing">' + CCSE.MenuHelper.ToggleButton(WrinklerInfoMod.config, 'alwaysShowCount', 'alwaysShowCountButton', 'Always show count ON', 'Always show count OFF', 'WrinklerInfoMod.ToggleOption') + '<label>(whether the number of wrinklers since the last shiny is displayed with every popped wrinkler)</label></div>';
+
+		str += '<div class="listing">' + CCSE.MenuHelper.ToggleButton(WrinklerInfoMod.config, 'showProb', 'showProbButton', 'Show probability ON', 'Show probability OFF', 'WrinklerInfoMod.ToggleOption') + '<label>(whether the probability of your current and longest shiny wrinkler droughts are shown in the stats screen)</label></div>';
 
 		return str;
 	}
@@ -151,10 +158,23 @@ WrinklerInfoMod.launch = function(){
 		document.getElementById(button).className = 'smallFancyButton prefButton option' + ((WrinklerInfoMod.config[optionName]^invert) ? '' : ' off');
 	}
 
+	// Helper method to check if "checkVer" is an older version than "compVer" ()
+	IsOlderVersion = function(checkVer, compVer){
+		splitCheckVer = checkVer.split('.');
+		splitCompVer = compVer.split('.')
+		return (splitCheckVer[0] < splitCompVer[0]) ||
+			(splitCheckVer[0] == splitCompVer[0] && splitCheckVer[1] < splitCompVer[1]) ||
+			(splitCheckVer[0] == splitCompVer[0] && splitCheckVer[1] == splitCompVer[1] && splitCheckVer[2] < splitCompVer[2]);
+	}
+
 	WrinklerInfoMod.LoadData = function(){
 		if(CCSE.config.OtherMods.WrinklerInfoMod){
 			WrinklerInfoMod.stats = CCSE.config.OtherMods.WrinklerInfoMod.stats;
 			WrinklerInfoMod.config = CCSE.config.OtherMods.WrinklerInfoMod.config;
+
+			// Store default values in saved fields which didn't exist when the save was created
+			if (IsOlderVersion(savedVersion, "1.2.0"))
+				WrinklerInfoMod.config.showProb = false;
 		}
 		else{
 			WrinklerInfoMod.stats = {
@@ -166,7 +186,8 @@ WrinklerInfoMod.launch = function(){
 				longestDrought: Game.wrinklersPopped
 			};
 			WrinklerInfoMod.config = {
-				alwaysShowCount: true
+				alwaysShowCount: true,
+				showProb: false
 			};
 		}
 		
