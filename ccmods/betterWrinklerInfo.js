@@ -173,7 +173,7 @@ WrinklerInfoMod.launch = function(){
 			WrinklerInfoMod.config = CCSE.config.OtherMods.WrinklerInfoMod.config;
 
 			// Store default values in saved fields which didn't exist when the save was created
-			if (IsOlderVersion(savedVersion, "1.2.0"))
+			if (IsOlderVersion(WrinklerInfoMod.stats.savedVersion, "1.2.0"))
 				WrinklerInfoMod.config.showProb = false;
 		}
 		else{
